@@ -45,6 +45,7 @@ class TaskList extends StatelessWidget {
                 ),
               ),
               ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: allTasks.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
