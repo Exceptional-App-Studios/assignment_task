@@ -33,7 +33,7 @@ class _TaskFourState extends State<TaskFour> {
     }
     catch(e){
       print(e);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Some error occured!'),,duration: Duration(seconds: 1), ));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Some error occured!'),duration: Duration(seconds: 1), ));
     }
   }
 
