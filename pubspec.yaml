@@ -27,6 +27,7 @@ dependencies:
   hexcolor: ^2.0.3
   http: ^0.13.3
   flutter_local_notifications: ^5.0.0+4
+  charts_flutter: ^0.10.0
 
 dev_dependencies:
   flutter_test:
