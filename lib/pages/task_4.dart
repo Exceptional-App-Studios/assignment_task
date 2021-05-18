@@ -20,7 +20,8 @@ class _TaskFourState extends State<TaskFour> {
    bool isPlaying=false;
 
   void getdata()async{
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Downloading audio...'), ));
+    try{
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Downloading audio...'),duration: Duration(seconds: 1), ));
     var apiURL = Uri.parse('https://exceptional-studios.herokuapp.com/api/audio-task');
     var response = await http.get(
       apiURL
@@ -28,6 +29,11 @@ class _TaskFourState extends State<TaskFour> {
     if(response.statusCode == 200){
      var ans =  jsonDecode(response.body);
       _downloadFile(ans['audio_file']);
+    }
+    }
+    catch(e){
+      print(e);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Some error occured!'),,duration: Duration(seconds: 1), ));
     }
   }
 
