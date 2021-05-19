@@ -1,0 +1,21 @@
+[
+
+
+		{
+			"Company": "HP",
+			"Sale": "10"
+		},
+		{
+			"Company": "DELL",
+			"Sale": "50"
+		},
+		{
+			"Company": "LENOVO",
+			"Sale": "35"
+		},
+		{
+			"Company": "Acer",
+			"Sale": "70"
+		}
+
+]

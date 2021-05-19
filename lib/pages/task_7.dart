@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class TaskSeven extends StatefulWidget {
   static const routeName = 'task-seven';
@@ -7,9 +8,78 @@ class TaskSeven extends StatefulWidget {
 }
 
 class _TaskSevenState extends State<TaskSeven> {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  @override
+  void initState() {
+    super.initState();
+    var initializationSettingsAndroid =
+        AndroidInitializationSettings('ic_launcher');
+    var initializationSettingsIOs = IOSInitializationSettings();
+    var initSetttings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOs);
+
+    flutterLocalNotificationsPlugin.initialize(initSetttings,
+        onSelectNotification: onSelectNotification);
+  }
+
+  Future onSelectNotification(String payload) async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Text("Notification Clicked $payload"),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     //Task 7: Send Dummy Notification
-    return Scaffold();
+    return Scaffold(
+      body: Center(
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: showNotification,
+                child: Container(
+                  color: Colors.green,
+                  height: 250,
+                  width: 250,
+                  child: Center(
+                    child: Text("Send Notification",
+                        style: TextStyle(
+                          color: Colors.white,
+                        )),
+                  ),
+                  margin: EdgeInsets.only(left: 25, right: 25),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 20, left: 25, right: 25),
+                child: Text(
+                  "Click this button to send a basic notification",
+                  style: TextStyle(fontSize: 22),
+                  textAlign: TextAlign.center,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future showNotification() async {
+    var android = new AndroidNotificationDetails(
+        'id', 'channel ', 'description',
+        priority: Priority.high, importance: Importance.max);
+    var iOS = new IOSNotificationDetails();
+    var platform = new NotificationDetails(android: android, iOS: iOS);
+    await flutterLocalNotificationsPlugin.show(
+        0, 'Flutter devs', 'A Basic Local Notification', platform,
+        payload: 'Flutter devs');
   }
 }

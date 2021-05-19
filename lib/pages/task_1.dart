@@ -1,5 +1,9 @@
+import 'dart:math';
+
+import 'package:assignment_app/models/user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:assignment_app/Api/api_call.dart';
 
 class TaskOne extends StatefulWidget {
   static const routeName = 'task-one';
@@ -8,6 +12,9 @@ class TaskOne extends StatefulWidget {
 }
 
 class _TaskOneState extends State<TaskOne> {
+  String image, name;
+  bool check = false;
+  UserInfo data;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,10 +26,11 @@ class _TaskOneState extends State<TaskOne> {
               SizedBox(height: 20),
               CircleAvatar(
                 radius: 70,
+                backgroundImage: image != null ? NetworkImage(image) : null,
               ),
               SizedBox(height: 15), //Image from API
               Text(
-                'Name',
+                name != null ? name : "Name",
                 style: TextStyle(fontSize: 29, color: Colors.black),
               ),
               Spacer(),
@@ -36,7 +44,10 @@ class _TaskOneState extends State<TaskOne> {
                     elevation: 10,
                     primary: HexColor('#363636'),
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    data = await ApiCall.GetUserData(Random().nextInt(4));
+                    displaydata();
+                  },
                   child: Text(
                     'Load data from api',
                     style: TextStyle(fontSize: 15, color: Colors.white),
@@ -46,18 +57,28 @@ class _TaskOneState extends State<TaskOne> {
               SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.only(bottom: 30),
-                child: Text(
-                  'Success Message',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: HexColor('#009154'),
-                  ),
-                ),
+                child: check
+                    ? Text(
+                        'Success Message',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: HexColor('#009154'),
+                        ),
+                      )
+                    : null,
               )
             ],
           ),
         ),
       ),
     );
+  }
+
+  void displaydata() {
+    setState(() {
+      name = data.firstname.toString();
+      image = data.image.toString();
+      check = true;
+    });
   }
 }
