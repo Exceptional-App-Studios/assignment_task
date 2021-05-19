@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:assignment_app/models/userapi.dart';
+import 'package:assignment_app/models/user.dart';
+
 
 class TaskOne extends StatefulWidget {
   static const routeName = 'task-one';
@@ -8,6 +11,9 @@ class TaskOne extends StatefulWidget {
 }
 
 class _TaskOneState extends State<TaskOne> {
+  String Image,name;
+  bool check=false;
+  user info;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,10 +25,11 @@ class _TaskOneState extends State<TaskOne> {
               SizedBox(height: 20),
               CircleAvatar(
                 radius: 70,
+                  backgroundImage: Image!=null ?  NetworkImage(Image) : null
               ),
               SizedBox(height: 15), //Image from API
               Text(
-                'Name',
+                name!=null ? name: "Name",
                 style: TextStyle(fontSize: 29, color: Colors.black),
               ),
               Spacer(),
@@ -36,7 +43,8 @@ class _TaskOneState extends State<TaskOne> {
                     elevation: 10,
                     primary: HexColor('#363636'),
                   ),
-                  onPressed: () {},
+                  onPressed: () async{info =  await userapi.GetuserData(0);
+                  displaydata();},
                   child: Text(
                     'Load data from api',
                     style: TextStyle(fontSize: 15, color: Colors.white),
@@ -46,18 +54,27 @@ class _TaskOneState extends State<TaskOne> {
               SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.only(bottom: 30),
-                child: Text(
-                  'Success Message',
+                child: check ? Text(
+                  'Successfully fetch data',
                   style: TextStyle(
                     fontSize: 18,
                     color: HexColor('#009154'),
                   ),
-                ),
+                ): null,
               )
             ],
           ),
         ),
       ),
     );
+  }
+
+  void displaydata(){
+
+    setState(() {
+      name = info.Firstname.toString();
+      Image = info.Image.toString();
+      check = true;
+    });
   }
 }
