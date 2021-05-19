@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class TaskInfo {
@@ -9,3 +8,4 @@ class TaskInfo {
 
   TaskInfo(this.taskNumber, this.taskName, this.cardColor, this.routeNames);
 }
+          

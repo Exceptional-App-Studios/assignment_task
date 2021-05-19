@@ -7,8 +7,12 @@ import 'package:assignment_app/pages/task_6.dart';
 import 'package:assignment_app/pages/task_7.dart';
 import 'package:assignment_app/tasks.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  await Hive.openBox('notes');
   runApp(MyApp());
 }
 
