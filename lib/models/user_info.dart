@@ -12,5 +12,5 @@ class UserInfo {
   });
 
   static UserInfo storedata(json) => UserInfo(
-      firstname: json['Firstname'], image: json['Image'], email: json['Email']);
+      firstname: json['name'], image: json['image_url'], email: json['email']);
 }

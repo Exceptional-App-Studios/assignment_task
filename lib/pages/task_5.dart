@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:assignment_app/models/chat_data.dart';
+import 'package:assignment_app/models/chart_data.dart';
 import 'package:assignment_app/Api/api_call.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -21,11 +21,11 @@ class _Task5State extends State<Task5> {
         children: [
           Container(
             margin: EdgeInsets.only(top: 50),
-            child: FutureBuilder<List<ChartData>>(
+            child: FutureBuilder<List<Chartdata>>(
               future: ApiCall.ReadChartData(),
               builder: (context, snapshot) {
                 final users = snapshot.data;
-
+                print(users);
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
                     return Center(child: CircularProgressIndicator());
@@ -35,23 +35,16 @@ class _Task5State extends State<Task5> {
                     } else {
                       return check
                           ? SfCartesianChart(
-                              title: ChartTitle(text: "Laptop Sales"),
-                              primaryXAxis: CategoryAxis(
-                                  title: AxisTitle(text: "Company Name")),
-                              primaryYAxis: NumericAxis(
-                                  title: AxisTitle(text: "Sales in Millions")),
                               series: <ChartSeries>[
-                                ColumnSeries<ChartData, String>(
-                                  dataSource: users,
-                                  xValueMapper: (ChartData c, _) => c.Company,
-                                  yValueMapper: (ChartData c, _) =>
-                                      double.parse(c.Sale),
-                                  dataLabelSettings: DataLabelSettings(
-                                    isVisible: true,
-                                    labelPosition:
-                                        ChartDataLabelPosition.inside,
-                                  ),
-                                )
+                                LineSeries<Chartdata, double>(
+                                    dataSource: users,
+                                    xValueMapper: (Chartdata c, _) =>
+                                        double.parse(c.x.toString()),
+                                    yValueMapper: (Chartdata c, _) =>
+                                        double.parse(c.y.toString()),
+                                    dataLabelSettings: DataLabelSettings(
+                                      isVisible: true,
+                                    ))
                               ],
                             )
                           : Center(

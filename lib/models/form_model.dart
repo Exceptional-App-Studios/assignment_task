@@ -1,12 +1,15 @@
 class ModelData {
-  String Name;
-  String Email;
-  String ID;
+  String name;
+  String email;
+  String collegeId;
 
-  ModelData({this.Name, this.Email, this.ID});
+  ModelData({this.name, this.email, this.collegeId});
 
   Map<String, String> toJson() => _$Modeltojson(this);
 
-  Map<String, String> _$Modeltojson(ModelData obj) =>
-      <String, String>{'full name': obj.Name, 'Email': obj.Email, 'ID': obj.ID};
+  Map<String, String> _$Modeltojson(ModelData obj) => <String, String>{
+        'name': obj.name,
+        'email': obj.email,
+        'collegeId': obj.collegeId
+      };
 }

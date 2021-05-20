@@ -95,18 +95,18 @@ class _TaskThreeState extends State<TaskThree> {
 
   void senddata() async {
     _data = ModelData(
-        Name: _namecontroller.text,
-        Email: _emailcontroller.text,
-        ID: _idcontroller.text);
+        name: _namecontroller.text,
+        email: _emailcontroller.text,
+        collegeId: _idcontroller.text);
 
     final response = await http.post(
-        Uri.parse(
-            'https://firebasestorage.googleapis.com/v0/b/mystical-glass-250612.appspot.com/o/postdata.json?alt=media&token=48dd4c38-326b-4364-822a-3134c45b3ecf'),
+        Uri.parse('https://exceptional-studios.herokuapp.com/api/users/'),
         headers: <String, String>{
-          "Content-Type": "application/json; charset=UTF-8",
+          "Content-Type": "application/json",
         },
         body: json.encode(_data.toJson()));
-    if (response.statusCode == 200) {
+    print(response.statusCode);
+    if (response.statusCode == 201) {
       setState(() {
         check = true;
         _namecontroller.clear();
