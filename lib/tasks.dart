@@ -58,7 +58,7 @@ class TaskList extends StatelessWidget {
                           EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                       width: double.infinity,
                       color: allTasks[index].cardColor,
-                      height: 80,
+                      height: 70,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
