@@ -45,6 +45,7 @@ class TaskList extends StatelessWidget {
                 ),
               ),
               ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: allTasks.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
@@ -55,7 +56,7 @@ class TaskList extends StatelessWidget {
                     },
                     child: Container(
                       margin:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                      EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                       width: double.infinity,
                       color: allTasks[index].cardColor,
                       height: 80,
