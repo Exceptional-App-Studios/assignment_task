@@ -26,6 +26,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   hexcolor: ^2.0.3
   http: ^0.13.3
+  syncfusion_flutter_charts: ^19.1.64
+  flutter_local_notifications: ^5.0.0+4
+  sqflite: ^2.0.0+3
+  path: ^1.8.0
 
 dev_dependencies:
   flutter_test:
