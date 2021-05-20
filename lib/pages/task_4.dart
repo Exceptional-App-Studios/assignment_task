@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:http/http.dart' as http;
 
 class TaskFour extends StatefulWidget {
   static const routeName = 'task-4';
@@ -8,43 +10,60 @@ class TaskFour extends StatefulWidget {
 }
 
 class _TaskFourState extends State<TaskFour> {
-  String url = "https://exceptional-studios.herokuapp.com/api/audio-task";
   AudioPlayer audioPlayer = AudioPlayer();
-  PlayerState playerState = PlayerState.PAUSED;
-  AudioCache audioCache;
-  String assetMusic = "song.mp3";
-  bool isPlaying = false;
+  AudioCache audioCache= AudioCache();
+  bool isPlaying=false;
 
-  @override
-  void initState() {
-    super.initState();
+  void fetchAudio()async{
+    try{
+      var response = await http.get(Uri.https("exceptional-studios.herokuapp.com", "api/audio-task"));
+      if(response.statusCode == 200){
+        var ans =  jsonDecode(response.body);
+        _downloadFile(ans['audio_file']);
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Downloading audio...'),
+          ),
+      );
 
-    audioPlayer = AudioPlayer();
-    audioCache = AudioCache(fixedPlayer: audioPlayer,prefix: "");
+    }
+    catch(e){
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error occurred while downloading!'),
+          ),
+      );
+    }
+  }
 
-    audioPlayer.onPlayerStateChanged.listen((PlayerState s) {
+
+  void _downloadFile(String url) async{
+    var fileP=await DefaultCacheManager().downloadFile(url);
+    playSong(fileP.file.path,true);
+  }
+
+  playSong(String path,local) async{
+    audioPlayer.stop();
+    if(local){
+      audioPlayer.play(path, isLocal: local);
       setState(() {
-        playerState = s;
+        isPlaying=true;
+      });
+    }
+    else{
+      audioPlayer= await audioCache.play(path);
+      setState(() {
+        isPlaying=true;
+      });
+    }
+
+    audioPlayer.onPlayerCompletion.listen((event) {
+      setState(() {
+        isPlaying=false;
       });
     });
-  }
-
-  @override
-  void dispose() {
-    audioPlayer.release();
-    audioPlayer.dispose();
-    audioCache.clearAll();
-    super.dispose();
-  }
-
-  playMusic() async {
-    isPlaying = true;
-    await audioCache.play(assetMusic);
-  }
-
-  pauseMusic() async {
-    isPlaying = false;
-    await audioPlayer.pause();
   }
 
 
@@ -67,9 +86,9 @@ class _TaskFourState extends State<TaskFour> {
                     style: ElevatedButton.styleFrom(
                       primary: Colors.red,
                     ),
-                    onPressed: ()  {
-                      pauseMusic();
-                    },
+                    onPressed: isPlaying
+                      ?(){audioPlayer.stop();setState(() {isPlaying=false;});}
+                      :null,
                     child: Text("Pause"),
                   ),
                 ),
@@ -87,7 +106,7 @@ class _TaskFourState extends State<TaskFour> {
                       primary: Colors.green[700],
                     ),
                     onPressed: ()  {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Download Started.")));
+                      fetchAudio();
                     },
                     child: Text(
                       'Download & Play',
@@ -107,8 +126,8 @@ class _TaskFourState extends State<TaskFour> {
                       primary: Colors.black,
                     ),
                     onPressed: ()  async{
-                      playMusic();
                       print("hi");
+                      playSong("song.mp3", false);
                     },
                     child: Text(
                       'Play local audio',
