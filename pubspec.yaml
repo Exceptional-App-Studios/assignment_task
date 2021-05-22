@@ -37,6 +37,7 @@ dependencies:
   intl: ^0.17.0
   syncfusion_flutter_charts: ^19.1.64
   draw_graph: ^1.0.0
+  flutter_local_notifications: ^5.0.0+4
 
 dev_dependencies:
   flutter_test:
