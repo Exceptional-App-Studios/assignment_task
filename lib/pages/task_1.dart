@@ -1,3 +1,5 @@
+import 'package:assignment_app/models/user.dart';
+import 'package:assignment_app/service/service.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -8,24 +10,32 @@ class TaskOne extends StatefulWidget {
 }
 
 class _TaskOneState extends State<TaskOne> {
+  ApiService apiService = ApiService();
+  String image, name;
+  bool check = false;
+  User data;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Center(
           child: Column(
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween, (Question: if this is used what should you remove from the code?)
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //  (Question: if this is used what should you remove from the code?)
+            // we can use  mainAxisAlignment: MainAxisAlignment.spaceBetween, instead of spacer
             children: [
               SizedBox(height: 20),
               CircleAvatar(
                 radius: 70,
+                backgroundImage: image != null ? NetworkImage(image) : null,
               ),
               SizedBox(height: 15), //Image from API
               Text(
-                'Name',
+                name != null ? name : "Name",
                 style: TextStyle(fontSize: 29, color: Colors.black),
               ),
-              Spacer(),
+
               Container(
                 width: 219,
                 height: 60,
@@ -36,7 +46,10 @@ class _TaskOneState extends State<TaskOne> {
                     elevation: 10,
                     primary: HexColor('#363636'),
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    data = await apiService.getUser();
+                    displaydata();
+                  },
                   child: Text(
                     'Load data from api',
                     style: TextStyle(fontSize: 15, color: Colors.white),
@@ -45,19 +58,28 @@ class _TaskOneState extends State<TaskOne> {
               ),
               SizedBox(height: 20),
               Padding(
-                padding: const EdgeInsets.only(bottom: 30),
-                child: Text(
-                  'Success Message',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: HexColor('#009154'),
-                  ),
-                ),
-              )
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: check
+                      ? Text(
+                          'Success Message',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: HexColor('#009154'),
+                          ),
+                        )
+                      : null)
             ],
           ),
         ),
       ),
     );
+  }
+
+  void displaydata() {
+    setState(() {
+      name = data.name.toString();
+      image = data.url.toString();
+      check = true;
+    });
   }
 }
